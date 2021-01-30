@@ -7,3 +7,5 @@ const connectDB = async () => {
     `Successfully connected to ${conn.connection.db.databaseName} at ${conn.connection.host}`
   );
 };
+
+module.exports = connectDB;
