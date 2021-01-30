@@ -16,6 +16,7 @@ const connectDB = require('./config/db');
 connectDB();
 
 // Load router files
+const bootcamps = require('./routes/bootcamps');
 
 // Create Express server
 const app = express();
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 // Use middleware methods
 
 // Use routers
+app.use('/api/v1/bootcamps', bootcamps);
 
 // Define PORT
 const PORT = process.env.PORT || 5000;
