@@ -8,6 +8,7 @@ const connectDB = async () => {
 
   console.log(
     `Successfully connected to ${conn.connection.db.databaseName} at ${conn.connection.host}`
+      .cyan.underline.bold
   );
 };
 
