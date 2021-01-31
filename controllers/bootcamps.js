@@ -12,7 +12,7 @@ exports.getBootcamps = async (req, res, next) => {
       .status(200)
       .json({ success: true, count: bootcamps.length, data: bootcamps });
   } catch (err) {
-    res.status(400).json({ success: false, msg: err.message });
+    next(err);
   }
 };
 
@@ -24,7 +24,6 @@ exports.getBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.findById(req.params.id);
 
     if (!bootcamp) {
-      // return res.status(404).json({ success: false, msg: err.message });
       return next(
         new ErrorResponse(`Resource not found with id ${req.params.id}`, 404)
       );
@@ -46,9 +45,13 @@ exports.createBootcamp = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.create(req.body);
 
-    res.status(201).json({ success: true, data: bootcamp });
+    res.status(201).json({
+      success: true,
+      msg: `Resource created`,
+      data: bootcamp,
+    });
   } catch (err) {
-    res.status(400).json({ success: false, msg: err.message });
+    next(err);
   }
 };
 
@@ -62,9 +65,20 @@ exports.updateBootcamp = async (req, res, next) => {
       runValidators: true,
     });
 
-    res.status(201).json({ success: true, data: bootcamp });
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(`Resource not found with id ${req.params.id}`, 404)
+      );
+    }
+
+    res.status(201).json({
+      success: true,
+      msg: `Resource updated`,
+      updatedFields: req.body,
+      data: bootcamp,
+    });
   } catch (err) {
-    res.status(400).json({ success: false, msg: err.message });
+    next(err);
   }
 };
 
@@ -73,10 +87,20 @@ exports.updateBootcamp = async (req, res, next) => {
 // @access    Private
 exports.deleteBootcamp = async (req, res, next) => {
   try {
-    const bootcamp = await Bootcamp.findByIdAndDelete({ _id: req.params.id });
+    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
 
-    res.status(200).json({ success: true, data: bootcamp });
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(`Resource not found with id ${req.params.id}`, 404)
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: `Resource deleted`,
+      data: bootcamp,
+    });
   } catch (err) {
-    res.status(400).json({ success: false, msg: err.message });
+    next(err);
   }
 };
