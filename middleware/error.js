@@ -17,7 +17,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongo duplicate key
   if (err.code === 11000) {
-    const message = `Duplicate value for property '${Object.keys(
+    const message = `Duplicate field value for property '${Object.keys(
       err.keyValue
     )}: ${Object.values(err.keyValue)}'`;
     error = new ErrorResponse(message, 400);
