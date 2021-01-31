@@ -10,6 +10,7 @@ const colors = require('colors');
 dotenv.config({ path: './config/config.env' });
 
 // Load custom modules
+const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
 // Connect to database
@@ -27,10 +28,11 @@ app.use(express.json());
 // Use developer loggin middleware
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
-// Use middleware methods
-
 // Use routers
 app.use('/api/v1/bootcamps', bootcamps);
+
+// Use middleware methods
+app.use(errorHandler);
 
 // Define PORT
 const PORT = process.env.PORT || 5000;
