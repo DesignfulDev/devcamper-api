@@ -7,14 +7,34 @@ const Bootcamp = require('../models/Bootcamp');
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  let query = JSON.stringify(req.query);
+  // Clone req.query
+  const reqQuery = { ...req.query };
+
+  // Remove fields from query
+  const removeFields = ['select'];
+
+  removeFields.forEach(param => delete reqQuery[param]);
+
+  // Create query string
+  let queryString = JSON.stringify(reqQuery);
 
   // Create MongoDB logical operators ($gt, $gte, etc)
-  query = query.replace(/\b(gt|gte|lt|lte|in)\b/g, match => '$' + match);
+  queryString = queryString.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    match => '$' + match
+  );
 
-  query = JSON.parse(query);
+  // Create a Mongoose find query from resource Schema
+  let query = Bootcamp.find(JSON.parse(queryString));
 
-  const bootcamps = await Bootcamp.find(query);
+  // Select fields
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query = query.select(fields);
+  }
+
+  // Execute query
+  const bootcamps = await query;
 
   res
     .status(200)
