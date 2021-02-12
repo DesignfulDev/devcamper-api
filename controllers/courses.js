@@ -9,10 +9,14 @@ const Course = require('../models/Course');
 exports.getCourses = asyncHandler(async (req, res, next) => {
   let query;
 
+  const populateBootcamp = { path: 'bootcamp', select: 'name description' };
+
   if (req.params.bootcampId) {
-    query = Course.find({ bootcamp: req.params.bootcampId });
+    query = Course.find({ bootcamp: req.params.bootcampId }).populate(
+      populateBootcamp
+    );
   } else {
-    query = Course.find().populate('bootcamp');
+    query = Course.find().populate(populateBootcamp);
   }
 
   const courses = await query;
