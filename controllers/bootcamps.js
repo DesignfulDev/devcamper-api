@@ -25,7 +25,10 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   );
 
   // Create a Mongoose find query from resource Schema
-  let query = Bootcamp.find(JSON.parse(queryString));
+  let query = Bootcamp.find(JSON.parse(queryString)).populate({
+    path: 'courses',
+    select: 'title tuition',
+  });
 
   // Select fields
   if (req.query.select) {
@@ -83,7 +86,10 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/bootcamps/:id
 // @access    Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findById(req.params.id);
+  const bootcamp = await Bootcamp.findById(req.params.id).populate({
+    path: 'courses',
+    select: 'title tuition',
+  });
 
   if (!bootcamp) {
     return next(
