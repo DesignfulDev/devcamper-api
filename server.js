@@ -18,6 +18,7 @@ connectDB();
 
 // Load router files
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 // Create Express server
 const app = express();
@@ -30,6 +31,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 // Use routers
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 // Use middleware methods
 app.use(errorHandler);
