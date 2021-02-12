@@ -155,7 +155,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 // @desc      Show bootcamps within distance radius
 // @route     GET /api/v1/bootcamps/radius/:zipcode/:distance/:units
 // @access    Private
-exports.getBootcampsInRaius = asyncHandler(async (req, res, next) => {
+exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   const { zipcode, distance, units } = req.params;
 
   // Get longitute & latitude from geocoder
