@@ -27,7 +27,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   // Create a Mongoose find query from resource Schema
   let query = Bootcamp.find(JSON.parse(queryString)).populate({
     path: 'courses',
-    select: 'title tuition',
+    select: 'title description tuition',
   });
 
   // Select fields
