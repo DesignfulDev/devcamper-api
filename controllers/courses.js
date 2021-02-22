@@ -8,25 +8,19 @@ const Course = require('../models/Course');
 // @route     GET /api/v1/bootcamps/:bootcampId/courses
 // @access    Public
 exports.getCourses = asyncHandler(async (req, res, next) => {
-  let query;
-
-  const populateBootcamp = { path: 'bootcamp', select: 'name description' };
-
   if (req.params.bootcampId) {
-    query = Course.find({ bootcamp: req.params.bootcampId }).populate(
-      populateBootcamp
-    );
+    const courses = await Course.find({
+      bootcamp: req.params.bootcampId,
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: courses.length,
+      data: courses,
+    });
   } else {
-    query = Course.find().populate(populateBootcamp);
+    res.status(200).json(res.advancedResults);
   }
-
-  const courses = await query;
-
-  res.status(200).json({
-    success: true,
-    count: courses.length,
-    data: courses,
-  });
 });
 
 // @desc      Show single course by ID
