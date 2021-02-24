@@ -21,6 +21,7 @@ connectDB();
 // Load router files
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 
 // Create Express server
 const app = express();
@@ -31,7 +32,7 @@ app.use(express.json());
 // Use developer loggin middleware
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
-// File uploadling
+// File uploading
 app.use(fileupload());
 
 // Set static folder
@@ -40,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 
 // Use middleware methods
 app.use(errorHandler);
