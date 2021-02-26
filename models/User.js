@@ -26,7 +26,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please add a password'],
-    minlength: [8, 'Password cannot be less than 8 characters'],
+    minlength: [8, 'Password cannot be less than 8 characters long'],
+    maxlength: [70, 'Password cannot be more than 70 characters long'],
     select: false,
   },
   resetPasswordToken: String,
@@ -49,6 +50,11 @@ UserSchema.methods.getSignedJwt = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
+};
+
+// Compare user entered password to one encrypted in databse
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 module.exports = mongoose.model('User', UserSchema);
