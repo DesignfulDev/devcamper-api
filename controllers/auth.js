@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
+const sendTokenResponse = require('../utils/tokenResponse');
 
 // @desc      Register new user
 // @route     POST /api/v1/auth/register
@@ -15,10 +16,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     role,
   });
 
-  // Create JWT
-  const token = user.getSignedJwt();
-
-  res.status(200).json({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
 
 // @desc      Login user
@@ -46,8 +44,5 @@ exports.login = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Invalid credentials', 401));
   }
 
-  // Create JWT
-  const token = user.getSignedJwt();
-
-  res.status(200).json({ success: true, token });
+  sendTokenResponse(user, 200, res);
 });
