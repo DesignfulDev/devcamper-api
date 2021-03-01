@@ -77,8 +77,8 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User with id ${req.user.id} is not authorized to change this resource`,
-        403
+        `User ${req.user.id} is not authorized to change this resource`,
+        401
       )
     );
   }
@@ -112,8 +112,8 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User with id ${req.user.id} is not authorized to change this resource`,
-        403
+        `User ${req.user.id} is not authorized to change this resource`,
+        401
       )
     );
   }
@@ -175,8 +175,8 @@ exports.bootcampImageUpload = asyncHandler(async (req, res, next) => {
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User with id ${req.user.id} is not authorized to change this resource`,
-        403
+        `User ${req.user.id} is not authorized to change this resource`,
+        401
       )
     );
   }
