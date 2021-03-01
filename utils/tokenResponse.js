@@ -1,4 +1,4 @@
-const daysToMs = require('../utils/timeConverter');
+const convertTime = require('../utils/timeConverter');
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
@@ -6,7 +6,10 @@ const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwt();
 
   const options = {
-    expires: new Date(Date.now() + daysToMs(process.env.JWT_COOKIE_EXPIRE)),
+    expires: new Date(
+      Date.now() +
+        convertTime.toMilliseconds(process.env.JWT_COOKIE_EXPIRE, 'days')
+    ),
     httpOnly: true,
   };
 
