@@ -102,7 +102,10 @@ const BootcampSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'The course needs to be associated with a user'],
+      required: [
+        true,
+        'The bootcamp needs to be associated with a publisher user',
+      ],
     },
   },
   {
