@@ -4,6 +4,7 @@ const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 const sendTokenResponse = require('../utils/tokenResponse');
 const sendEmail = require('../utils/sendEmail');
+const timeConverter = require('../utils/timeConverter');
 
 // @desc      Register new user
 // @route     POST /api/v1/auth/register
@@ -47,6 +48,18 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   sendTokenResponse(user, 200, res);
+});
+
+// @desc      Log current user out / clear cookies
+// @route     GET /api/v1/auth/logout
+// @access    Private
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + timeConverter.toMilliseconds(5, 'seconds')),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ success: true, msg: 'User logged out', data: {} });
 });
 
 // @desc      Show current logged in user
