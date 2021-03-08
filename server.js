@@ -60,7 +60,7 @@ app.use(xss());
 // Set rate limit
 const limiter = rateLimit({
   windowMs: timeConverter.toMilliseconds(10, 'minutes'),
-  max: 10,
+  max: 100,
 });
 
 app.use(limiter);
