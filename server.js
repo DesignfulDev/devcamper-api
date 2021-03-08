@@ -11,6 +11,9 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 
 // Load enviroment variables
 dotenv.config({ path: './config/config.env' });
@@ -18,6 +21,7 @@ dotenv.config({ path: './config/config.env' });
 // Load custom modules
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
+const timeConverter = require('./utils/timeConverter');
 
 // Connect to database
 connectDB();
@@ -52,6 +56,20 @@ app.use(helmet());
 
 // Prevent XSS attacks
 app.use(xss());
+
+// Set rate limit
+const limiter = rateLimit({
+  windowMs: timeConverter.toMilliseconds(10, 'minutes'),
+  max: 10,
+});
+
+app.use(limiter);
+
+// Prevent HTTP param pollution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
