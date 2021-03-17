@@ -1,5 +1,4 @@
 exports.toMilliseconds = (time, from) => {
-  console.log('Running time converter...');
   switch (from) {
     case 'seconds':
       return time * 1000;
